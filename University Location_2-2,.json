@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "University Location of USA",
+  "width": 500,
+  "height": 300,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {"type": "topojson", "feature": "states"}
+      },
+      "transform": [{"calculate": "datum.State", "as": "state"}],
+      "projection": {"type": "albersUsa"},
+      "mark": {"type": "geoshape"},
+      "encoding": {
+        "color": {"field": "id", "type": "nominal", "legend": null},
+        "opacity": {"value": 0.3}
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/sz0314/universitydata.io/main/IPEDS_data_with_num.csv"
+      },
+      "projection": {"type": "albersUsa"},
+      "mark": "circle",
+      "encoding": {
+        "longitude": {
+          "field": "Longitude location of institution",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude location of institution",
+          "type": "quantitative"
+        },
+        "size": {"value": 10},
+        "color": {"value": "steelblue"},
+        "tooltip": [
+          {"field": "Name", "title": "Institution"},
+          {"field": "Latitude location of institution", "title": "Latitude"},
+          {"field": "Longitude location of institution", "title": "Longitude"},
+          {"field": "State", "title": "State"}
+        ]
+      }
+    }
+  ],
+  "config": {}
+}

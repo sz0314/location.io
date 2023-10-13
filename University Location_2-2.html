@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.15.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.2"></script>
+</head>
+<body>
+  <div id="vis"/>
+  <script>
+    const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "University Location of USA",
+  "width": 500,
+  "height": 300,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {"type": "topojson", "feature": "states"}
+      },
+      "transform": [{"calculate": "datum.State", "as": "state"}],
+      "projection": {"type": "albersUsa"},
+      "mark": {"type": "geoshape"},
+      "encoding": {
+        "color": {"field": "id", "type": "nominal", "legend": null},
+        "opacity": {"value": 0.3}
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/sz0314/universitydata.io/main/IPEDS_data_with_num.csv"
+      },
+      "projection": {"type": "albersUsa"},
+      "mark": "circle",
+      "encoding": {
+        "longitude": {
+          "field": "Longitude location of institution",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude location of institution",
+          "type": "quantitative"
+        },
+        "size": {"value": 10},
+        "color": {"value": "steelblue"},
+        "tooltip": [
+          {"field": "Name", "title": "Institution"},
+          {"field": "Latitude location of institution", "title": "Latitude"},
+          {"field": "Longitude location of institution", "title": "Longitude"},
+          {"field": "State", "title": "State"}
+        ]
+      }
+    }
+  ],
+  "config": {}
+};
+    vegaEmbed("#vis", spec, {mode: "vega-lite"}).then(console.log).catch(console.warn);
+  </script>
+</body>
+</html>
